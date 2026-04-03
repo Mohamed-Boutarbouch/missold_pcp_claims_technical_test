@@ -17,7 +17,19 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${inter.variable} ${lato.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <div
+          className="fixed inset-0 -z-20 bg-cover bg-center"
+          style={{ backgroundImage: "url('/wallpaper.jpg')" }}
+        />
+        <div className="fixed inset-0 -z-10 bg-hero-gradient" />
+
+        <main className="flex-1">
+          {children}
+        </main>
+
+        <div className="bg-white h-24" />
+      </body>
     </html>
   );
 }
