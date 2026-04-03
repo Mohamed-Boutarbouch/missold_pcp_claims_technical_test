@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { poppins, inter, lato } from "./fonts";
+import { Header } from "./components/header";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -23,6 +24,8 @@ export default function RootLayout({
           style={{ backgroundImage: "url('/wallpaper.jpg')" }}
         />
         <div className="fixed inset-0 -z-10 bg-hero-gradient" />
+
+        <Header />
 
         <main className="flex-1">
           {children}
