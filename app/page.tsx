@@ -4,8 +4,31 @@ import { Disclaimer } from "@/components/disclaimer";
 import { FinePrint } from "@/components/fine-print";
 import { LogoCloud } from "@/components/logo-cloud";
 import { WorkingWith } from "@/components/working-with";
+import { TRACKED_PARAMS } from "@/data/tracked-params";
+import { cookies } from "next/headers";
 
-export default function Home() {
+type Props = {
+  searchParams: Promise<Record<string, string>>
+}
+
+export default async function Home({ searchParams }: Props) {
+  const params = await searchParams
+
+  const trackingParams: Record<string, string> = {}
+  for (const key of TRACKED_PARAMS) {
+    if (params[key]) trackingParams[key] = params[key]
+  }
+
+  if (Object.keys(trackingParams).length > 0) {
+    const cookieStore = await cookies()
+    cookieStore.set("_tracking", JSON.stringify(trackingParams), {
+      httpOnly: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 day
+    })
+  }
+
   return (
     <Container>
       <section className="grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-28 md:gap-y-16">
