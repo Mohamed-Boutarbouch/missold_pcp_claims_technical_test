@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { poppins, inter, lato } from "./fonts";
 import { Header } from "./components/header";
+import { Footer } from "./components/footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +32,7 @@ export default function RootLayout({
           {children}
         </main>
 
-        <div className="bg-white h-24" />
+        <Footer />
       </body>
     </html>
   );
