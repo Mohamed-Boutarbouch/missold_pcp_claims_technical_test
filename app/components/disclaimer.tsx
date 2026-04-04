@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Disclaimer() {
   return (
-    <div className="relative p-8 md:p-12 opacity-90 rounded-4xl bg-primary/90">
+    <div className="relative p-8 md:p-12 opacity-80 rounded-4xl bg-main shadow-[0_4px_4px_0_#FFFFFF33]">
       <div className="absolute -top-5 -left-5 w-16 md:w-20">
         <Image
           src="/exclamation_mark.svg"
