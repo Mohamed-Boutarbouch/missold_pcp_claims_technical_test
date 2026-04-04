@@ -1,6 +1,7 @@
 import { Container } from "./components/container";
 import { Cta } from "./components/cta";
-import Disclaimer from "./components/disclaimer";
+import { Disclaimer } from "./components/disclaimer";
+import { WorkingWith } from "./components/working-with";
 
 export default function Home() {
   return (
@@ -15,8 +16,8 @@ export default function Home() {
           <Cta />
         </div>
 
-        <div className="order-2 md:order-3">
-          {/* content */}
+        <div className="order-2 md:order-3 self-center justify-self-center">
+          <WorkingWith />
         </div>
 
         <div className="order-3 md:order-4 -mr-6 md:mr-0">

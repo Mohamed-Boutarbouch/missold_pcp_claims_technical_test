@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Disclaimer() {
+export function Disclaimer() {
   return (
     <div className="relative p-12 opacity-90 rounded-4xl bg-primary/90">
       <div className="absolute -top-5 -left-5 w-20">
