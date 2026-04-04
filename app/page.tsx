@@ -1,9 +1,9 @@
-import { Container } from "./components/container";
-import { Cta } from "./components/cta";
-import { Disclaimer } from "./components/disclaimer";
-import { FinePrint } from "./components/fine-print";
-import { LogoCloud } from "./components/logo-cloud";
-import { WorkingWith } from "./components/working-with";
+import { Container } from "@/components/container";
+import { Cta } from "@/components/cta";
+import { Disclaimer } from "@/components/disclaimer";
+import { FinePrint } from "@/components/fine-print";
+import { LogoCloud } from "@/components/logo-cloud";
+import { WorkingWith } from "@/components/working-with";
 
 export default function Home() {
   return (
