@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${lato.variable} h-full antialiased`}
+      className={`${poppins.variable} ${inter.variable} ${lato.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="min-h-full flex flex-col">
         <div
