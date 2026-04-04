@@ -3,6 +3,10 @@ import "./globals.css";
 import { poppins, inter, lato } from "./fonts";
 import { Header } from "./components/header";
 import { Footer } from "./components/footer";
+import { IBM_Plex_Sans } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const ibmPlexSans = IBM_Plex_Sans({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${inter.variable} ${lato.variable} h-full antialiased overflow-x-hidden`}
+      className={cn("h-full", "antialiased", "overflow-x-hidden", poppins.variable, inter.variable, lato.variable, "font-sans", ibmPlexSans.variable)}
     >
       <body className="min-h-full flex flex-col">
         <div
