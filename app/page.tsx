@@ -4,30 +4,8 @@ import { Disclaimer } from "@/components/disclaimer";
 import { FinePrint } from "@/components/fine-print";
 import { LogoCloud } from "@/components/logo-cloud";
 import { WorkingWith } from "@/components/working-with";
-import { TRACKED_PARAMS } from "@/data/tracked-params";
-import { cookies } from "next/headers";
 
-type Props = {
-  searchParams: Promise<Record<string, string>>
-}
-
-export default async function Home({ searchParams }: Props) {
-  const params = await searchParams
-
-  const trackingParams: Record<string, string> = {}
-  for (const key of TRACKED_PARAMS) {
-    if (params[key]) trackingParams[key] = params[key]
-  }
-
-  if (Object.keys(trackingParams).length > 0) {
-    const cookieStore = await cookies()
-    cookieStore.set("_tracking", JSON.stringify(trackingParams), {
-      httpOnly: false,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 day
-    })
-  }
+export default async function Home() {
 
   return (
     <Container>

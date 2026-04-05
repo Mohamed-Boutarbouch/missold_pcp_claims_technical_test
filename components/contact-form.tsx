@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { leadSchema, type LeadFormData } from "@/lib/schemas"
 import { useTrackingParams } from "@/hooks/use-tracking-params"
 
@@ -22,11 +22,17 @@ import MultipleSelector from "./ui/multi-select"
 import { UK_CITIES } from "@/data/uk-cities"
 import { UKPhoneInput } from "./uk-phone-input"
 
+type formSubmissionState = "idle" | "loading" | "success" | "error";
+
 export function ContactForm() {
+  const [mounted, setMounted] = useState(false)
   const urlParams = useTrackingParams()
-  const [status, setStatus] =
-    useState<"idle" | "loading" | "success" | "error">("idle")
+  const [status, setStatus] = useState<formSubmissionState>("idle")
   const [errorMsg, setErrorMsg] = useState("")
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const form = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
@@ -37,30 +43,36 @@ export function ContactForm() {
       phone: "",
       dateOfBirth: undefined,
       address: [],
-      ...urlParams,
     },
   })
+
+  useEffect(() => {
+    if (Object.keys(urlParams).length === 0) return
+    (Object.entries(urlParams) as [keyof LeadFormData, string][]).forEach(([key, value]) => {
+      form.setValue(key, value, { shouldDirty: false, shouldTouch: false, shouldValidate: false })
+    })
+  }, [urlParams])
 
   async function onSubmit(data: LeadFormData) {
     setStatus("loading")
     setErrorMsg("")
     console.log(data)
-    // try {
-    //   const res = await fetch("/api/leads", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(data),
-    //   })
-    //   if (!res.ok) {
-    //     const json = await res.json()
-    //     throw new Error(json.message ?? "Something went wrong")
-    //   }
-    //   setStatus("success")
-    //   form.reset()
-    // } catch (err) {
-    //   setStatus("error")
-    //   setErrorMsg(err instanceof Error ? err.message : "Submission failed")
-    // }
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      if (!res.ok) {
+        const json = await res.json()
+        throw new Error(json.message ?? "Something went wrong")
+      }
+      setStatus("success")
+      form.reset()
+    } catch (err) {
+      setStatus("error")
+      setErrorMsg(err instanceof Error ? err.message : "Submission failed")
+    }
   }
 
   if (status === "success") {
@@ -143,7 +155,6 @@ export function ContactForm() {
             )}
           />
 
-          {/* City — full width */}
           <div className="md:col-span-2">
             <FormField
               control={form.control}
@@ -185,9 +196,7 @@ export function ContactForm() {
         <Button
           type="submit"
           className="w-full h-12 text-base"
-          disabled={
-            !form.formState.isValid || status === "loading"
-          }
+          disabled={mounted ? !form.formState.isValid || status === "loading" : false}
         >
           {status === "loading" ? "Submitting…" : "Submit"}
         </Button>
