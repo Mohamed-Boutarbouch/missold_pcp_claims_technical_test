@@ -22,7 +22,7 @@ export function DatePickerField({
   const [open, setOpen] = React.useState(false)
 
   return (
-    <Field className="font-body w-full">
+    <Field className="font-sans w-full">
       <FieldLabel htmlFor="date">Date of birth</FieldLabel>
 
       <Popover open={open} onOpenChange={setOpen}>

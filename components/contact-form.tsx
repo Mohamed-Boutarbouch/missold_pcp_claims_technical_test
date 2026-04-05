@@ -16,21 +16,21 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ADDRESS_OPTIONS } from "@/data/address-options"
 import { DatePickerField } from "./date-picker-field"
 import MultipleSelector from "./ui/multi-select"
 import { UK_CITIES } from "@/data/uk-cities"
-
+import { UKPhoneInput } from "./uk-phone-input"
 
 export function ContactForm() {
   const urlParams = useTrackingParams()
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
+  const [status, setStatus] =
+    useState<"idle" | "loading" | "success" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState("")
 
   const form = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
+    mode: "onChange",
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -44,22 +44,23 @@ export function ContactForm() {
   async function onSubmit(data: LeadFormData) {
     setStatus("loading")
     setErrorMsg("")
-    try {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
-      if (!res.ok) {
-        const json = await res.json()
-        throw new Error(json.message ?? "Something went wrong")
-      }
-      setStatus("success")
-      form.reset()
-    } catch (err) {
-      setStatus("error")
-      setErrorMsg(err instanceof Error ? err.message : "Submission failed")
-    }
+    console.log(data)
+    // try {
+    //   const res = await fetch("/api/leads", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(data),
+    //   })
+    //   if (!res.ok) {
+    //     const json = await res.json()
+    //     throw new Error(json.message ?? "Something went wrong")
+    //   }
+    //   setStatus("success")
+    //   form.reset()
+    // } catch (err) {
+    //   setStatus("error")
+    //   setErrorMsg(err instanceof Error ? err.message : "Submission failed")
+    // }
   }
 
   if (status === "success") {
@@ -74,9 +75,12 @@ export function ContactForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="firstName"
@@ -90,6 +94,7 @@ export function ContactForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="lastName"
@@ -103,66 +108,73 @@ export function ContactForm() {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <UKPhoneInput
+                    className="w-full"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="dateOfBirth"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <DatePickerField
+                    value={field.value}
+                    onChangeAction={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* City — full width */}
+          <div className="md:col-span-2">
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      className="w-full"
+                      defaultOptions={UK_CITIES}
+                      placeholder="Select cities"
+                      hideClearAllButton
+                      hidePlaceholderWhenSelected
+                      emptyIndicator={
+                        <p className="text-center text-sm">No results found</p>
+                      }
+                      value={UK_CITIES.filter((c) =>
+                        field.value?.includes(c.value)
+                      )}
+                      onChange={(options) =>
+                        field.onChange(options.map((o) => o.value))
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
-
-        <FormField
-          control={form.control}
-          name="phone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input type="tel" placeholder="+212 6 12 34 56 78" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="dateOfBirth"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <DatePickerField
-                  value={field.value}
-                  onChangeAction={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>City</FormLabel>
-              <FormControl>
-                <MultipleSelector
-                  className="w-full"
-                  defaultOptions={UK_CITIES}
-                  placeholder="Select cities"
-                  hideClearAllButton
-                  hidePlaceholderWhenSelected
-                  emptyIndicator={
-                    <p className="text-center text-sm">No results found</p>
-                  }
-                  value={UK_CITIES.filter((c) =>
-                    field.value?.includes(c.value)
-                  )}
-                  onChange={(options) =>
-                    field.onChange(options.map((o) => o.value))
-                  }
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
         {status === "error" && (
           <Alert variant="destructive">
@@ -170,7 +182,13 @@ export function ContactForm() {
           </Alert>
         )}
 
-        <Button type="submit" disabled={status === "loading"} className="w-full">
+        <Button
+          type="submit"
+          className="w-full h-12 text-base"
+          disabled={
+            !form.formState.isValid || status === "loading"
+          }
+        >
           {status === "loading" ? "Submitting…" : "Submit"}
         </Button>
       </form>

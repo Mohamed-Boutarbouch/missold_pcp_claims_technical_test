@@ -11,10 +11,10 @@
   --color-footer: #1C160B;
   --color-subheader: #DFDFDF;
 
-  /* Font families */
-  --font-display: var(--font-poppins);
-  --font-body: var(--font-inter);
-  --font-footerlink: var(--font-lato);
+  /* Font families  */
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --font-footer: var(--font-lato);
 
   /* Background images */
   --background-image-hero-gradient: linear-gradient(
@@ -25,8 +25,8 @@
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
+  /* --font-heading: var(--font-heading); */
+  /* --font-sans: var(--font-sans); */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

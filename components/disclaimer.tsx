@@ -12,7 +12,7 @@ export function Disclaimer() {
           className="w-full h-auto"
         />
       </div>
-      <p className="font-body text-white font-medium text-sm md:text-base">You do not need to use a claims management company or solicitors, you can complain directly to your lender or to the Financial Ombudsman Service free of charge. The Financial Conduct Authority FCA is consulting on a potential redress scheme for specific motor-finance commission complaints. Lenders have until 4 December 2025 to respond to eligible complaints.</p>
+      <p className="font-sans text-white font-medium text-sm md:text-base">You do not need to use a claims management company or solicitors, you can complain directly to your lender or to the Financial Ombudsman Service free of charge. The Financial Conduct Authority FCA is consulting on a potential redress scheme for specific motor-finance commission complaints. Lenders have until 4 December 2025 to respond to eligible complaints.</p>
     </div>
   )
 }

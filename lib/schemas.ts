@@ -1,3 +1,4 @@
+import { isValidPhoneNumber } from "libphonenumber-js";
 import { z } from "zod"
 
 export const leadSchema = z.object({
@@ -5,9 +6,10 @@ export const leadSchema = z.object({
 
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
 
-  phone: z
-    .string()
-    .regex(/^\+?[1-9]\d{7,14}$/, "Enter a valid phone number (e.g. +212612345678)"),
+  phone: z.string().refine(
+    (value) => isValidPhoneNumber(value, "GB"),
+    "Enter a valid UK phone number"
+  ),
 
   dateOfBirth: z
     .date()

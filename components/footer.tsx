@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-footer font-footerlink text-white text-sm">
+    <footer className="bg-footer font-footer text-white text-sm">
       <div className="px-8 max-w-7xl mx-auto my-10 grid gap-y-8 grid-cols-1 md:grid-cols-3 md:grid-rows-[auto_auto]">
         <div className="order-1 md:order-0 justify-self-center self-center md:col-start-3 md:row-start-2 md:justify-self-end">
           <div className="relative w-40 aspect-3/1">
@@ -18,7 +18,7 @@ export function Footer() {
         </div>
 
         <div className="order-2 md:order-0 md:col-span-3 md:row-start-1 text-center">
-          <div className="font-body font-medium leading-4">
+          <div className="font-sans font-medium leading-4">
             <small>Missold PCPClaims is a trading name of Financial Claims Helpline Ltd (FCA No. 833418). You can complain to your lender or to the Financial Ombudsman Service for free. We may refer you to an independent SRA-regulated solicitor; you are free to choose your own solicitor. Customer fees typically range from 15% to 30% plus VAT. The FCA is considering a Consumer Redress Scheme for motor finance, which may provide a free route to redress.</small>
             <br />
             <small>*Average payout figure. Outcomes may vary. <Link href="https://www.fca.org.uk/publications/consultation-papers/cp25-27-motor-finance-consumer-redress-scheme" target="_blank" className="hover:underline hover:underline-offset-2">https://www.fca.org.uk/publications/consultation-papers/cp25-27-motor-finance-consumer-redress-scheme</Link></small>

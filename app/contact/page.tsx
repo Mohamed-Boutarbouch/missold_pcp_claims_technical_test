@@ -4,7 +4,7 @@ import { Container } from "@/components/container";
 export default function Contact() {
   return (
     <Container>
-      <div className="font-body w-full bg-white rounded-2xl p-8">
+      <div className="font-sans w-full bg-white rounded-2xl p-8">
         <h1 className="text-2xl font-semibold text-gray-900 mb-2">Get in touch</h1>
         <p className="text-gray-500 text-sm mb-8">
           Fill in your details and we'll contact you shortly.
