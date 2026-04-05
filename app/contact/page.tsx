@@ -1,11 +1,16 @@
+import { ContactForm } from "@/components/contact-form";
 import { Container } from "@/components/container";
-import Link from "next/link";
 
 export default function Contact() {
   return (
     <Container>
-      <Link href="/" className="text-white">Go back</Link>
-      <h1 className="text-white">Hello</h1>
+      <div className="font-body w-full bg-white rounded-2xl p-8">
+        <h1 className="text-2xl font-semibold text-gray-900 mb-2">Get in touch</h1>
+        <p className="text-gray-500 text-sm mb-8">
+          Fill in your details and we'll contact you shortly.
+        </p>
+        <ContactForm />
+      </div>
     </Container>
   );
 }

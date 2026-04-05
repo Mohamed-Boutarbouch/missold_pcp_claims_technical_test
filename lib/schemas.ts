@@ -2,18 +2,33 @@ import { z } from "zod"
 
 export const leadSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
+
   lastName: z.string().min(2, "Last name must be at least 2 characters"),
+
   phone: z
     .string()
     .regex(/^\+?[1-9]\d{7,14}$/, "Enter a valid phone number (e.g. +212612345678)"),
+
   dateOfBirth: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Enter a valid date")
-    .refine((val) => {
-      const date = new Date(val)
-      const age = new Date().getFullYear() - date.getFullYear()
-      return age >= 18 && age <= 100
-    }, "You must be at least 18 years old"),
+    .date()
+    .refine((date) => {
+      if (!(date instanceof Date) || isNaN(date.getTime())) return false
+
+      const today = new Date()
+      let age = today.getFullYear() - date.getFullYear()
+
+      const hasHadBirthdayThisYear =
+        today.getMonth() > date.getMonth() ||
+        (today.getMonth() === date.getMonth() &&
+          today.getDate() >= date.getDate())
+
+      if (!hasHadBirthdayThisYear) age--
+
+      return age >= 18
+    }, {
+      message: "You must be at least 18 years old",
+    }),
+
   address: z.array(z.string()).min(1, "Select at least one address option"),
 
   gclid: z.string().optional(),
