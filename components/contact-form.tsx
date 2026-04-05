@@ -1,6 +1,6 @@
 "use client"
 
-import { useForm, useWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { leadSchema, type LeadFormData } from "@/lib/schemas"
@@ -20,6 +20,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ADDRESS_OPTIONS } from "@/data/address-options"
 import { DatePickerField } from "./date-picker-field"
+import MultipleSelector from "./ui/multi-select"
+import { UK_CITIES } from "@/data/uk-cities"
 
 
 export function ContactForm() {
@@ -38,18 +40,6 @@ export function ContactForm() {
       ...urlParams,
     },
   })
-
-  // useWatch replaces the double-nested FormField anti-pattern for checkboxes
-  const selectedAddresses = useWatch({ control: form.control, name: "address" }) ?? []
-
-  function toggleAddress(value: string, checked: boolean) {
-    const current = form.getValues("address") ?? []
-    form.setValue(
-      "address",
-      checked ? [...current, value] : current.filter((v) => v !== value),
-      { shouldValidate: true }
-    )
-  }
 
   async function onSubmit(data: LeadFormData) {
     setStatus("loading")
@@ -145,32 +135,30 @@ export function ContactForm() {
           )}
         />
 
-        {/* Address — fixed: single FormField, useWatch for derived state */}
         <FormField
           control={form.control}
           name="address"
-          render={() => (
+          render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
-                {ADDRESS_OPTIONS.map((option) => (
-                  <div key={option.value} className="flex items-center gap-2">
-                    <Checkbox
-                      id={`address-${option.value}`}
-                      checked={selectedAddresses.includes(option.value)}
-                      onCheckedChange={(checked) =>
-                        toggleAddress(option.value, checked === true)
-                      }
-                    />
-                    <label
-                      htmlFor={`address-${option.value}`}
-                      className="text-sm font-normal cursor-pointer"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
+              <FormLabel>City</FormLabel>
+              <FormControl>
+                <MultipleSelector
+                  className="w-full"
+                  defaultOptions={UK_CITIES}
+                  placeholder="Select cities"
+                  hideClearAllButton
+                  hidePlaceholderWhenSelected
+                  emptyIndicator={
+                    <p className="text-center text-sm">No results found</p>
+                  }
+                  value={UK_CITIES.filter((c) =>
+                    field.value?.includes(c.value)
+                  )}
+                  onChange={(options) =>
+                    field.onChange(options.map((o) => o.value))
+                  }
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
