@@ -1,16 +1,41 @@
-import { google } from "googleapis"
+import { sheets_v4, auth as googleAuth } from "@googleapis/sheets"
+import { LEADS_HEADERS, CONVERSIONS_HEADERS } from "@/data/google-sheets-headers"
 
 const SHEET_ID = process.env.GOOGLE_SHEET_ID!
 
-const auth = new google.auth.JWT({
+const auth = new googleAuth.JWT({
   email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
   key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 })
 
-const sheets = google.sheets({ version: "v4", auth })
+const sheets = new sheets_v4.Sheets({ auth })
+
+async function ensureHeaders(sheetName: string, headers: string[]) {
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: `${sheetName}!A1:${String.fromCharCode(64 + headers.length)}1`,
+  })
+
+  const currentHeaders = res.data.values?.[0] ?? []
+
+  const needsUpdate =
+    currentHeaders.length !== headers.length ||
+    headers.some((h, i) => h !== currentHeaders[i])
+
+  if (needsUpdate) {
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SHEET_ID,
+      range: `${sheetName}!A1`,
+      valueInputOption: "RAW",
+      requestBody: { values: [headers] },
+    })
+  }
+}
 
 export async function appendLeadToSheet(data: Record<string, unknown>) {
+  await ensureHeaders("Leads", LEADS_HEADERS)
+
   const row = [
     data.firstName,
     data.lastName,
@@ -19,21 +44,17 @@ export async function appendLeadToSheet(data: Record<string, unknown>) {
       ? data.dateOfBirth.toISOString().split("T")[0]
       : data.dateOfBirth,
     Array.isArray(data.address) ? data.address.join(", ") : data.address,
-
     data.gclid ?? "",
     data.gbraid ?? "",
     data.wbraid ?? "",
-
     data.utm_source ?? "",
     data.utm_medium ?? "",
     data.utm_campaign ?? "",
     data.utm_term ?? "",
     data.utm_content ?? "",
-
     data.fbclid ?? "",
     data.ttclid ?? "",
     data.taboola_click_id ?? "",
-
     data.createdAt,
     data.transactionId,
   ]
@@ -58,6 +79,8 @@ export async function appendConversionToSheet(data: {
   gbraid: string
   wbraid: string
 }) {
+  await ensureHeaders("Conversions", CONVERSIONS_HEADERS)
+
   const row = [
     data.googleClickId,
     data.conversionName,
