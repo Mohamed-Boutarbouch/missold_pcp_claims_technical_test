@@ -59,7 +59,7 @@ export async function POST(request: Request) {
           conversionValue: "0",
           conversionCurrency: "GBP",
           transactionId,
-          hashedEmail: "",
+          hashedEmail: "", // no email captured
           hashedPhone: createHash("sha256").update(normalizePhone(data.phone).toLowerCase()).digest("hex"),
           gbraid: data.gbraid ?? "",
           wbraid: data.wbraid ?? "",

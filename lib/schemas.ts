@@ -37,6 +37,15 @@ const dobRefine = (date: Date) => {
   return age >= 18
 }
 
+export const updateLeadServerSchema = baseSchema
+  .extend({
+    dateOfBirth: z.coerce
+      .date()
+      .refine(dobRefine, { message: "You must be at least 18 years old" })
+      .optional(),
+  })
+  .partial()
+
 export const leadSchema = baseSchema.extend({
   dateOfBirth: z.date().refine(dobRefine, { message: "You must be at least 18 years old" }),
 })
@@ -46,3 +55,13 @@ export const leadServerSchema = baseSchema.extend({
 })
 
 export type LeadFormData = z.infer<typeof leadSchema>
+
+export const updateLeadSchema = baseSchema
+  .extend({
+    dateOfBirth: z.date()
+      .refine(dobRefine, { message: "You must be at least 18 years old" })
+      .optional(),
+  })
+  .partial()
+
+export type UpdateLeadFormData = z.infer<typeof updateLeadSchema>

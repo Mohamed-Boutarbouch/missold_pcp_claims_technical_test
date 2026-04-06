@@ -1,10 +1,9 @@
-import { use } from "react"
 import { ContactForm } from "@/components/contact-form"
 import { Container } from "@/components/container"
 import { getTrackingParams } from "@/lib/get-tracking-params"
 
-export default function Contact() {
-  const tracking = use(getTrackingParams())
+export default async function Contact() {
+  const tracking = await getTrackingParams()
 
   return (
     <Container>

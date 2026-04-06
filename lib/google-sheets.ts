@@ -78,3 +78,108 @@ export async function appendConversionToSheet(data: {
     requestBody: { values: [row] },
   })
 }
+
+export async function findLeadRowByTransactionId(
+  transactionId: string
+): Promise<number | null> {
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: "Leads!R:R",
+  })
+
+  const rows = res.data.values ?? []
+  const idx = rows.findIndex((r) => r[0] === transactionId)
+  if (idx === -1) return null
+  return idx + 1
+}
+
+export async function updateLeadInSheet(
+  rowIndex: number,
+  data: Record<string, unknown>
+) {
+  const row = [
+    data.firstName,
+    data.lastName,
+    data.phone,
+    data.dateOfBirth instanceof Date
+      ? data.dateOfBirth.toISOString().split("T")[0]
+      : data.dateOfBirth,
+    Array.isArray(data.address) ? data.address.join(", ") : data.address,
+    data.gclid ?? "",
+    data.gbraid ?? "",
+    data.wbraid ?? "",
+    data.utm_source ?? "",
+    data.utm_medium ?? "",
+    data.utm_campaign ?? "",
+    data.utm_term ?? "",
+    data.utm_content ?? "",
+    data.fbclid ?? "",
+    data.ttclid ?? "",
+    data.taboola_click_id ?? "",
+    data.createdAt,
+    data.transactionId,
+  ]
+
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SHEET_ID,
+    range: `Leads!A${rowIndex}:R${rowIndex}`,
+    valueInputOption: "USER_ENTERED",
+    requestBody: { values: [row] },
+  })
+}
+
+export async function getLeadRowByIndex(
+  rowIndex: number
+): Promise<Record<string, any>> {
+  // Read the row from the sheet
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: `Leads!A${rowIndex}:R${rowIndex}`,
+  })
+
+  const row = res.data.values?.[0]
+  if (!row) throw new Error(`No row found at index ${rowIndex}`)
+
+  // Map row values back to your data keys
+  const [
+    firstName,
+    lastName,
+    phone,
+    dateOfBirth,
+    address,
+    gclid,
+    gbraid,
+    wbraid,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
+    fbclid,
+    ttclid,
+    taboola_click_id,
+    createdAt,
+    transactionId,
+  ] = row
+
+  return {
+    firstName,
+    lastName,
+    phone,
+    dateOfBirth,
+    address: address ? address.split(", ").map((s: any) => s.trim()) : [],
+    gclid,
+    gbraid,
+    wbraid,
+    utm_source,
+    utm_medium,
+    utm_campaign,
+    utm_term,
+    utm_content,
+    fbclid,
+    ttclid,
+    taboola_click_id,
+    createdAt,
+    transactionId,
+  }
+}
