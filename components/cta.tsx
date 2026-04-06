@@ -5,17 +5,13 @@ export function Cta() {
     <section className="flex flex-col justify-between gap-6">
       <div className="font-heading text-white font-bold text-3xl md:text-4xl capitalize text-center md:text-start">
         <h1>
-          claim money back
+          claim money back from mis-sold car finance
         </h1>
-
-        <h2>
-          from mis-sold car finance
-        </h2>
       </div>
 
-      <h3 className="font-sans font-medium text-subheader text-center text-sm md:text-base md:text-start">
+      <h2 className="font-sans font-medium text-subheader text-center text-sm md:text-base md:text-start">
         You could be one of 14 million* drivers owed money due to mis-sold PCP or HP between 2007-2024.
-      </h3>
+      </h2>
 
       <Link
         href="/contact"

@@ -27,23 +27,19 @@ export async function PATCH(
     )
   }
 
-  // PATCH handler
   const rowIndex = await findLeadRowByTransactionId(transactionId)
   if (rowIndex === null) {
     return NextResponse.json({ message: "Lead not found" }, { status: 404 })
   }
 
-  // 1️⃣ Fetch existing row
-  const existingLead = await getLeadRowByIndex(rowIndex) // implement this in google-sheets.ts
+  const existingLead = await getLeadRowByIndex(rowIndex)
 
-  // 2️⃣ Merge incoming fields (parsed.data) over existing row
   const updatedLead = {
-    ...existingLead,   // preserves tracking and other existing data
-    ...parsed.data,    // overwrite only edited fields
+    ...existingLead,
+    ...parsed.data,
     transactionId,
   }
 
-  // 3️⃣ Update sheet
   await updateLeadInSheet(rowIndex, updatedLead)
 
   return NextResponse.json({ success: true, transactionId })

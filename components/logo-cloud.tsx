@@ -10,7 +10,6 @@ export function LogoCloud() {
           width={144}
           height={48}
           className="h-auto w-full"
-          priority
         />
       </div>
 
@@ -21,7 +20,6 @@ export function LogoCloud() {
           width={975}
           height={120}
           className="h-auto w-full"
-          priority
         />
       </div>
     </section>

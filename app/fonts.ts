@@ -5,6 +5,7 @@ export const poppins = Poppins({
   weight: ['700', '900'],
   variable: '--font-poppins',
   display: 'swap',
+  preload: false,
 })
 
 export const inter = Inter({
@@ -12,6 +13,7 @@ export const inter = Inter({
   weight: ['500'],
   variable: '--font-inter',
   display: 'swap',
+  preload: false,
 })
 
 export const lato = Lato({
@@ -19,4 +21,5 @@ export const lato = Lato({
   weight: ['400', '700'],
   variable: '--font-lato',
   display: 'swap',
+  preload: false,
 })

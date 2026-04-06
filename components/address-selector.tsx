@@ -1,5 +1,5 @@
 import { Label } from '@/components/ui/label'
-import MultipleSelector from '@/components/ui/multi-select'
+import { MultipleSelector } from '@/components/ui/multi-select'
 import { UK_CITIES } from '@/data/uk-cities'
 
 export function MultipleSelect() {

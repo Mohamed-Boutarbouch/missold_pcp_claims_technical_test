@@ -35,7 +35,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
 
   const [submittedData, setSubmittedData] = useState<LeadFormData | null>(null);
 
-  // --- Create form ---
   const form = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
     mode: "onChange",
@@ -49,7 +48,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
     },
   })
 
-  // --- Edit form (all fields optional — PATCH) ---
   const editForm = useForm<UpdateLeadFormData>({
     resolver: zodResolver(updateLeadSchema),
     mode: "onChange",
@@ -92,7 +90,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
   async function onEdit(data: UpdateLeadFormData) {
     if (!transactionId) return
 
-    // Strip empty strings so we only PATCH fields that were actually filled
     const payload = Object.fromEntries(
       Object.entries(data).filter(([, v]) => {
         if (v === "" || v === undefined || v === null) return false
@@ -130,7 +127,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
     }
   }
 
-  // ── Success screen ──────────────────────────────────────────────────────────
   if (status === "success") {
     return (
       <div className="space-y-4">
@@ -140,7 +136,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
           </AlertDescription>
         </Alert>
 
-        {/* Reference ID pill */}
         {transactionId && (
           <p className="text-center text-xs text-gray-400">
             Reference:{" "}
@@ -150,7 +145,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
           </p>
         )}
 
-        {/* Edit toggle */}
         {editState === "saved" ? (
           <Alert className="border-blue-200 bg-blue-50">
             <AlertDescription className="text-blue-800 text-center py-2">
@@ -179,7 +173,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
             </button>
           </div>
         ) : (
-          // ── Edit panel ────────────────────────────────────────────────────
           <div className="border border-gray-200 rounded-xl p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div>
@@ -331,7 +324,6 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
     )
   }
 
-  // ── Create form ─────────────────────────────────────────────────────────────
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

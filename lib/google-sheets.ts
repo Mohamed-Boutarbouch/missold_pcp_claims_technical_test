@@ -131,7 +131,6 @@ export async function updateLeadInSheet(
 export async function getLeadRowByIndex(
   rowIndex: number
 ): Promise<Record<string, any>> {
-  // Read the row from the sheet
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SHEET_ID,
     range: `Leads!A${rowIndex}:R${rowIndex}`,
@@ -140,7 +139,6 @@ export async function getLeadRowByIndex(
   const row = res.data.values?.[0]
   if (!row) throw new Error(`No row found at index ${rowIndex}`)
 
-  // Map row values back to your data keys
   const [
     firstName,
     lastName,
