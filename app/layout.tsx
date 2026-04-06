@@ -4,7 +4,6 @@ import { poppins, inter, lato } from "./fonts";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { TrackingCapture } from "@/components/tracking-capture";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +21,6 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", "overflow-x-hidden", poppins.variable, inter.variable, lato.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <TrackingCapture />
         <div
           className="fixed inset-0 -z-20 bg-cover bg-center"
           style={{ backgroundImage: "url('/wallpaper.jpg')" }}

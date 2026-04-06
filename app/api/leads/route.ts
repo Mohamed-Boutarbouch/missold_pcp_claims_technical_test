@@ -1,8 +1,11 @@
-import z from "zod"
-import { NextResponse } from "next/server"
+import { appendConversionToSheet, appendLeadToSheet } from "@/lib/google-sheets"
+import { normalizePhone } from "@/lib/normalize-phone"
 import { leadServerSchema } from "@/lib/schemas"
-import { appendLeadToSheet, appendConversionToSheet } from "@/lib/google-sheets"
+import { TRACKING_COOKIE_NAME } from "@/lib/tracked-params"
 import { createHash, randomUUID } from "crypto"
+import { cookies } from "next/headers"
+import { NextResponse } from "next/server"
+import z from "zod"
 
 export async function POST(request: Request) {
   try {
@@ -27,7 +30,11 @@ export async function POST(request: Request) {
       )
     }
 
-    const data = parsed.data
+    const store = await cookies()
+    const raw = store.get(TRACKING_COOKIE_NAME)?.value
+    const tracking = raw ? JSON.parse(raw) : {}
+
+    const data = { ...parsed.data, ...tracking }
     console.log("[POST /api/leads] Parsed data:", JSON.stringify(data, null, 2))
 
     const transactionId = randomUUID()
@@ -53,7 +60,7 @@ export async function POST(request: Request) {
           conversionCurrency: "GBP",
           transactionId,
           hashedEmail: "",
-          hashedPhone: createHash("sha256").update(data.phone).digest("hex"),
+          hashedPhone: createHash("sha256").update(normalizePhone(data.phone).toLowerCase()).digest("hex"),
           gbraid: data.gbraid ?? "",
           wbraid: data.wbraid ?? "",
         })

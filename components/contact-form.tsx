@@ -1,11 +1,14 @@
 "use client"
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useState } from "react"
 import { leadSchema, type LeadFormData } from "@/lib/schemas"
-import { useTrackingParams } from "@/hooks/use-tracking-params"
+import { TrackingParams } from "@/lib/tracked-params"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 
+import { DatePickerField } from "@/components/date-picker-field"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -15,24 +18,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { DatePickerField } from "./date-picker-field"
-import MultipleSelector from "./ui/multi-select"
+import { MultipleSelector } from "@/components/ui/multi-select"
+import { UKPhoneInput } from "@/components/uk-phone-input"
 import { UK_CITIES } from "@/data/uk-cities"
-import { UKPhoneInput } from "./uk-phone-input"
 
-type formSubmissionState = "idle" | "loading" | "success" | "error";
+type FormSubmissionState = "idle" | "loading" | "success" | "error"
 
-export function ContactForm() {
-  const [mounted, setMounted] = useState(false)
-  const urlParams = useTrackingParams()
-  const [status, setStatus] = useState<formSubmissionState>("idle")
+export function ContactForm({ tracking }: { tracking: TrackingParams }) {
+  const [status, setStatus] = useState<FormSubmissionState>("idle")
   const [errorMsg, setErrorMsg] = useState("")
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const form = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
@@ -43,30 +37,26 @@ export function ContactForm() {
       phone: "",
       dateOfBirth: undefined,
       address: [],
+      ...tracking,
     },
   })
-
-  useEffect(() => {
-    if (Object.keys(urlParams).length === 0) return
-    (Object.entries(urlParams) as [keyof LeadFormData, string][]).forEach(([key, value]) => {
-      form.setValue(key, value, { shouldDirty: false, shouldTouch: false, shouldValidate: false })
-    })
-  }, [urlParams])
 
   async function onSubmit(data: LeadFormData) {
     setStatus("loading")
     setErrorMsg("")
-    console.log(data)
+
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       })
+
       if (!res.ok) {
         const json = await res.json()
         throw new Error(json.message ?? "Something went wrong")
       }
+
       setStatus("success")
       form.reset()
     } catch (err) {
@@ -87,10 +77,7 @@ export function ContactForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-8"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
           <FormField
@@ -196,7 +183,7 @@ export function ContactForm() {
         <Button
           type="submit"
           className="w-full h-12 text-base"
-          disabled={mounted ? !form.formState.isValid || status === "loading" : false}
+          disabled={!form.formState.isValid || status === "loading"}
         >
           {status === "loading" ? "Submitting…" : "Submit"}
         </Button>

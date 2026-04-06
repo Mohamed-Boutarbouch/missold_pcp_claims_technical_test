@@ -172,7 +172,7 @@ const CommandEmpty = ({ className, ...props }: React.ComponentProps<typeof Comma
 
 CommandEmpty.displayName = 'CommandEmpty'
 
-const MultipleSelector = ({
+export const MultipleSelector = ({
   value,
   onChange,
   placeholder,
@@ -619,4 +619,3 @@ const MultipleSelector = ({
 }
 
 MultipleSelector.displayName = 'MultipleSelector'
-export default MultipleSelector
