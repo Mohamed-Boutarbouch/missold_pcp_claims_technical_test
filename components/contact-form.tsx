@@ -271,7 +271,7 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>City</FormLabel>
+                          <FormLabel>Address</FormLabel>
                           <FormControl>
                             <MultipleSelector
                               className="w-full"
@@ -396,7 +396,7 @@ export function ContactForm({ tracking }: { tracking: TrackingParams }) {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <FormControl>
                     <MultipleSelector
                       className="w-full"
