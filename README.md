@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Lead Generation App
 
-## Getting Started
+Quick start guide to run, test, and deploy the Lead Generation app. Skip the background — follow the steps.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Prerequisites
+
+- Node v24 (or matching your system)
+- npm (or pnpm/yarn)
+- A Google Sheets spreadsheet and a Google Service Account with Sheets API access
+
+---
+
+## Environment Variables (Required)
+
+Set locally or in Vercel (exact names used in code):
+
+```env
+GOOGLE_SHEET_ID=<your spreadsheet ID>
+GOOGLE_SERVICE_ACCOUNT_EMAIL=<your service account email>
+GOOGLE_PRIVATE_KEY=<your service account private key, replace newlines with \n>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+go to google cloud console create a project go to api & services
 
-## Learn More
+choose Google Sheets API and then enable it
 
-To learn more about Next.js, take a look at the following resources:
+go to credentials tab and then create service account
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+enter service account name and generate it to have your GOOGLE_SERVICE_ACCOUNT_EMAIL key.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After creating the service account, click on it.
+Go to the Keys tab.
+Click Add Key → Create New Key → JSON.
+Download the JSON file. This is your credentials file.
