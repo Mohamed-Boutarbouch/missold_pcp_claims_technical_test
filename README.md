@@ -10,7 +10,7 @@ Quick start guide to run, test, and deploy the Lead Generation app. Skip the bac
 - npm (or pnpm/yarn)
 - A Google Sheets spreadsheet and a Google Service Account with Sheets API access
 
-## 📥 Installation
+## Installation
 
 ```bash
 git clone <repo-url>
@@ -28,7 +28,7 @@ GOOGLE_SHEET_ID=<your_google_sheet_id>
 
 ---
 
-## ☁️ Google Cloud Setup
+## Google Cloud Setup
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/) → **Create a Project**
 2. Enable **Google Sheets API**:
@@ -44,7 +44,7 @@ GOOGLE_SHEET_ID=<your_google_sheet_id>
 
 ---
 
-## 📝 Google Sheets Setup
+## Google Sheets Setup
 
 1. Create a new Google Spreadsheet
 2. Extract the Sheet ID from the URL:
@@ -64,7 +64,7 @@ https://docs.google.com/spreadsheets/d/<GOOGLE_SHEET_ID>/edit
 
 ---
 
-## ▶️ Running the App
+## Running the App
 
 ```bash
 npm run dev
@@ -82,7 +82,7 @@ http://localhost:3000/?gclid=EAIaIQobChMI1234567890&gbraid=0AAAAABcDEFGHIJKLMNOP
 
 ---
 
-## ✍️ Testing the Form
+## Testing the Form
 
 Navigate to `/contact` and use this test data:
 
@@ -105,6 +105,6 @@ Submit the form → check `Leads` and `Conversions` sheets in your Google Sheet.
 
 ---
 
-## ✅ Done
+## Done
 
 Your Lead Generation app is now running, tracking URL parameters, and saving submissions to Google Sheets.
